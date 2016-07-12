@@ -9,4 +9,4 @@ Usage:
 Note: Input file must end with ".SpO2"
 
 E.g:
-./spo2est 2016 7 12 23 12 11 /path/to/filename
+./spo2est 2016 7 12 23 12 11 /path/to/filename.SpO2
