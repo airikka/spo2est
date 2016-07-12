@@ -1,0 +1,12 @@
+spo2est - SpO2 Edit Start Time
+
+A Python script that creates a new SpO2 file from an existing SpO2 file with edited start time.
+The new file is placed in the same directory as the old one, with "_mod" added to its name.
+Only tested with a SpO2 file from a CMS50D+ device.
+
+Usage:
+./spo2est year month day hour minute second input-file.SpO2
+Note: Input file must end with ".SpO2"
+
+E.g:
+./spo2est 2016 7 12 23 12 11 /path/to/filename

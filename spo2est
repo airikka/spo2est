@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+# Copyright (c) 2016 Tommi Airikka
+# License: GPLv2
+
+import sys, struct
+from shutil import copyfile
+
+def _usage():
+    print(sys.argv[0] + " year month day hour minute second input-file.SpO2")
+    print("Note: Input file must end with \".SpO2\"")
+
+# Pack little endian
+def _ple(i):
+    return struct.pack("<I", i)
+
+if len(sys.argv) != 8:
+    _usage()
+    exit(42)
+
+
+year = _ple(int(sys.argv[1]))
+month = _ple(int(sys.argv[2]))
+day = _ple(int(sys.argv[3]))
+hour = _ple(int(sys.argv[4]))
+minute = _ple(int(sys.argv[5]))
+second = _ple(int(sys.argv[6]))
+filepath = sys.argv[7]
+dotpos = len(filepath) - 5
+dotname = filepath[dotpos:]
+
+if dotname.lower() != ".spo2":
+    _usage()
+    exit(43)
+
+newfilepath = filepath[:dotpos] + '_mod' + dotname
+
+copyfile(filepath, newfilepath)
+
+f = open(newfilepath, 'rb+')
+
+f.seek(0x420)
+before = f.read(24)
+f.seek(0x420)
+s = year + month + day + hour + minute + second
+f.write(s)
+f.seek(0x420)
+after = f.read(24)
+
+f.close()
+
+print("Old file:\t" + before.encode("hex"))
+print("New file:\t" + after.encode("hex"))
